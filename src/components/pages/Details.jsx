@@ -1,4 +1,4 @@
-// src/components/pages/Details.jsx
+
 import { useState, useEffect } from 'react';
 import { useStarWars } from '../../context/StarWarsContext';
 import { fetchItemDetails } from '../../services/swapiService';

@@ -1,4 +1,4 @@
-// src/components/common/Loading.jsx
+
 
 const Loading = ({ message = "Cargando..." }) => {
   return (

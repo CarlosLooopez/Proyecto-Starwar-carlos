@@ -1,4 +1,4 @@
-// src/components/debug/APITest.jsx
+
 import { useState } from 'react';
 import { testAPIConnection, fetchCharacters, fetchVehicles, fetchPlanets } from '../../services/swapiService';
 

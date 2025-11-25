@@ -1,4 +1,4 @@
-// src/components/common/Card.jsx
+
 import { useStarWars } from '../../context/StarWarsContext';
 
 const Card = ({ item, type }) => {
@@ -56,13 +56,12 @@ const Card = ({ item, type }) => {
     }
   };
 
-  // En src/components/common/Card.jsx
-// Reemplaza la función getImageUrl() con esto:
+ 
 
 const getImageUrl = () => {
-  // Mapeo específico de imágenes por UID
+  
   const imageMap = {
-    // PERSONAJES (type: 'people')
+   
     people: {
       1: 'https://cdn.quotesgram.com/img/52/81/1395363194-Star_Wars_LukeSkywalker.jpg',        // Luke Skywalker
 
@@ -125,7 +124,7 @@ const getImageUrl = () => {
       8: 'https://ejemplo.com/naboo.jpg',                  // Naboo
       9: 'https://ejemplo.com/coruscant.jpg',              // Coruscant
       10: 'https://ejemplo.com/kamino.jpg',                // Kamino
-      // Agrega más planetas aquí...
+      
     }
   };
 

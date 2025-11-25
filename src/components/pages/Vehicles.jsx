@@ -1,4 +1,3 @@
-// src/components/pages/Vehicles.jsx
 import { useEffect } from 'react';
 import { useStarWars } from '../../context/StarWarsContext';
 import { fetchVehicles } from '../../services/swapiService';
@@ -16,24 +15,36 @@ const Vehicles = () => {
   } = useStarWars();
 
   useEffect(() => {
+    let mounted = true;
+
     const loadVehicles = async () => {
-      // Si ya tenemos vehículos, no cargar de nuevo
+      // Si ya tenemos vehículos en el contexto, NO cargar de nuevo
       if (vehicles.length > 0) return;
-      
+
       try {
         setLoading(true);
         setError(null);
+
         const vehiclesData = await fetchVehicles();
+
+        if (!mounted) return;
         setVehicles(vehiclesData);
+
       } catch (err) {
-        setError('Error al cargar los vehículos: ' + err.message);
+        if (mounted) {
+          setError('Error al cargar los vehículos: ' + err.message);
+        }
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
 
     loadVehicles();
-  }, [vehicles.length, setVehicles, setLoading, setError]);
+
+    return () => {
+      mounted = false;
+    };
+  }, []); // se ejecuta una sola vez
 
   if (loading) {
     return <Loading message="Cargando vehículos de Star Wars..." />;

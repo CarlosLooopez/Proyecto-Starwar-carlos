@@ -1,4 +1,4 @@
-// src/components/pages/Favorites.jsx
+
 import { useStarWars } from '../../context/StarWarsContext';
 import Card from '../common/Card';
 

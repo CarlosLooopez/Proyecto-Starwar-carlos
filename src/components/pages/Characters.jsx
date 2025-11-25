@@ -1,4 +1,3 @@
-// src/components/pages/Characters.jsx
 import { useEffect } from 'react';
 import { useStarWars } from '../../context/StarWarsContext';
 import { fetchCharacters } from '../../services/swapiService';
@@ -16,24 +15,34 @@ const Characters = () => {
   } = useStarWars();
 
   useEffect(() => {
+    let mounted = true;
+
     const loadCharacters = async () => {
-      // Si ya tenemos personajes, no cargar de nuevo
+      // Evitar cargar si ya existen
       if (characters.length > 0) return;
-      
+
       try {
         setLoading(true);
         setError(null);
+
         const charactersData = await fetchCharacters();
+        if (!mounted) return;
+
         setCharacters(charactersData);
       } catch (err) {
+        if (!mounted) return;
         setError('Error al cargar los personajes: ' + err.message);
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
 
     loadCharacters();
-  }, [characters.length, setCharacters, setLoading, setError]);
+
+    return () => {
+      mounted = false;
+    };
+  }, []); // Solo 1 vez al montar
 
   if (loading) {
     return <Loading message="Cargando personajes de Star Wars..." />;
@@ -63,7 +72,7 @@ const Characters = () => {
           </p>
         </div>
       </div>
-      
+
       {characters.length === 0 ? (
         <div className="text-center">
           <i className="fas fa-users text-muted" style={{ fontSize: '4rem' }}></i>
@@ -73,8 +82,8 @@ const Characters = () => {
         <div className="row">
           {characters.map((character) => (
             <Card 
-              key={character.uid} 
-              item={character} 
+              key={character.uid}
+              item={character}
               type="people"
             />
           ))}

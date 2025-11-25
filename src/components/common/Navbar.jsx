@@ -1,4 +1,4 @@
-// src/components/common/Navbar.jsx
+
 import { useStarWars } from '../../context/StarWarsContext';
 
 const Navbar = () => {

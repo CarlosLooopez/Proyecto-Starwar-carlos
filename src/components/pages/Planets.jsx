@@ -1,4 +1,3 @@
-// src/components/pages/Planets.jsx
 import { useEffect } from 'react';
 import { useStarWars } from '../../context/StarWarsContext';
 import { fetchPlanets } from '../../services/swapiService';
@@ -16,24 +15,34 @@ const Planets = () => {
   } = useStarWars();
 
   useEffect(() => {
+    let mounted = true;
+
     const loadPlanets = async () => {
-      // Si ya tenemos planetas, no cargar de nuevo
+      // Evitar recargar si ya los tenemos
       if (planets.length > 0) return;
-      
+
       try {
         setLoading(true);
         setError(null);
+
         const planetsData = await fetchPlanets();
+        if (!mounted) return;
+
         setPlanets(planetsData);
       } catch (err) {
+        if (!mounted) return;
         setError('Error al cargar los planetas: ' + err.message);
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
 
     loadPlanets();
-  }, [planets.length, setPlanets, setLoading, setError]);
+
+    return () => {
+      mounted = false;
+    };
+  }, []); // Solo correr 1 vez al montar
 
   if (loading) {
     return <Loading message="Cargando planetas de Star Wars..." />;
@@ -63,7 +72,7 @@ const Planets = () => {
           </p>
         </div>
       </div>
-      
+
       {planets.length === 0 ? (
         <div className="text-center">
           <i className="fas fa-globe text-muted" style={{ fontSize: '4rem' }}></i>
@@ -73,8 +82,8 @@ const Planets = () => {
         <div className="row">
           {planets.map((planet) => (
             <Card 
-              key={planet.uid} 
-              item={planet} 
+              key={planet.uid}
+              item={planet}
               type="planets"
             />
           ))}
